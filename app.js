@@ -1,12 +1,12 @@
 
 //Requires class Players as arguments for constructor
 class Battle {
-    //compare rolls
-    //choose how many die to roll
+    //arguments are Player class
     constructor(...contenders) {
         //list of players
         this.players = [];
-        this.lastRoll = [];
+        this.activeBattle = {};
+        this.battleHistory = [];
         for (let contender of contenders) {
             this.players.push(contender);
         };
@@ -26,6 +26,60 @@ class Battle {
         return this.players[0];
     }
 
+    initBattle() {
+        this.activeBattle = {
+            attacker: this.players[0],
+            defender: this.players[1],
+            attackDice: [],
+            defendDice: [],
+            attackScore: 0,
+            defendScore: 0
+        };
+    }
+
+    attack() {
+
+        const fight = this.activeBattle;
+
+        fight.attackDice = this.largeToSmall(this.roll(3));
+        fight.defendDice = this.largeToSmall(this.roll(3));
+
+
+        let fightCount = 0;
+        let results = {
+            attackScore: 0,
+            attackResults: [],
+            defendScore: 0,
+            defendResults: []
+        };
+
+        if (fight.attackDice.length >= fight.defendDice.length) {
+            fightCount = fight.defendDice.length;
+        } else {
+            fightCount = fight.attackDice.length;
+        }
+
+        for (let i = 0; i < fightCount; i++) {
+            if (fight.attackDice[i] > fight.defendDice[i]) {
+                results.attackResults.push(1);
+                results.defendResults.push(0);
+                results.attackScore++;
+            } else {
+                results.attackResults.push(0);
+                results.defendResults.push(1);
+                results.defendScore++;
+            }
+        }
+
+
+        fight.attackScore = results.attackScore;
+        fight.defendScore = results.defendScore;
+
+        //need to push a unique copy and not the pointer to the object
+        this.battleHistory.push(this.activeBattle);
+
+    }
+
     //Returns an array of the requested number of dice rolled defaulted to 6 sides.
     roll(numDice, numSides = 6) {
 
@@ -42,23 +96,28 @@ class Battle {
             diceArray.push(result);
         }
 
-        this.lastRoll = diceArray;
+        return diceArray;
 
-        return this.lastRoll;
 
     }
 
-    largeToSmall() {
-        this.lastRoll.sort((a, b) => {
+    largeToSmall(array) {
+        array.sort((a, b) => {
             return b - a;
         });
+
+        return array;
     }
 
-    smallToLarge() {
-        this.lastRoll.sort((a, b) => {
+    smallToLarge(array) {
+        array.sort((a, b) => {
             return a - b;
         });
+
+        return array;
     }
+
+
 
 }
 
