@@ -1,36 +1,26 @@
 
 //Requires class Players as arguments for constructor
 class DiceMatch {
-    //arguments are Player class
-    // constructor(...contenders) {
-    //     //list of players
-    //     this.players = [];
-    //     this.activeBattle = {};
-    //     this.battleHistory = [];
-    //     this.turnCount = 1;
-    //     for (let contender of contenders) {
-    //         this.players.push(contender);
-    //     };
-    // }
 
     constructor(
         { attacker, attackerLives } = {},
         { defender, defenderLives } = {},
         dieSideCount) {
 
-        //list of players
-        this.attacker = attacker;
-        this.attackerLives = attackerLives;
-        this.defender = defender;
-        this.defenderLives = defenderLives;
+        this.attacker = {
+            player: attacker,
+            lives: attackerLives,
+            rollHistory: []
+        };
+
+        this.defender = {
+            player: defender,
+            lives: defenderLives,
+            rollHistory: []
+        };
+
         this.dieSideCount = dieSideCount;
 
-
-
-        // this.players = [];
-        // this.activeBattle = {};
-        // this.battleHistory = [];
-        // this.turnCount = 1;
     }
 
     // get numPlayers() {
@@ -48,57 +38,52 @@ class DiceMatch {
     //     return this.players[0];
     // }
 
-    // initBattle() {
-    //     this.activeBattle = {
-    //         attacker: this.players[0],
-    //         defender: this.players[1],
-    //         attackDice: [],
-    //         defendDice: [],
-    //         attackScore: 0,
-    //         defendScore: 0
-    //     };
-    // }
+    attack(attackerNumOfDice = 1, defenderNumOfDice = 1) {
+        if (attackerNumOfDice <= 0 || defenderNumOfDice <= 0) return;
 
-    attack() {
+        const attacker = this.attacker;
+        const defender = this.defender;
 
-        const fight = this.activeBattle;
+        const attackerRoll = this.largeToSmall(this.roll(attackerNumOfDice));
+        const defenderRoll = this.largeToSmall(this.roll(defenderNumOfDice));
 
-        fight.attackDice = this.largeToSmall(this.roll(3));
-        fight.defendDice = this.largeToSmall(this.roll(3));
-
-
-        let fightCount = 0;
-        let results = {
-            attackScore: 0,
-            attackResults: [],
-            defendScore: 0,
-            defendResults: []
+        let diceToCompare = 0;
+        let losses = {
+            attacker: [],
+            defender: []
         };
 
-        if (fight.attackDice.length >= fight.defendDice.length) {
-            fightCount = fight.defendDice.length;
+        if (attackerRoll.length >= defenderRoll.length) {
+            diceToCompare = defenderRoll.length;
         } else {
-            fightCount = fight.attackDice.length;
+            diceToCompare = attackerRoll.length;
         }
 
-        for (let i = 0; i < fightCount; i++) {
-            if (fight.attackDice[i] > fight.defendDice[i]) {
-                results.attackResults.push(1);
-                results.defendResults.push(0);
-                results.attackScore++;
+        for (let i = 0; i < diceToCompare; i++) {
+            if (attackerRoll[i] > defenderRoll[i]) {
+                losses.attacker.push(0);
+                losses.defender.push(-1);
+                defender.lives--;
             } else {
-                results.attackResults.push(0);
-                results.defendResults.push(1);
-                results.defendScore++;
+                losses.attacker.push(-1);
+                losses.defender.push(0);
+                attacker.lives--;
             }
         }
 
-
-        fight.attackScore = results.attackScore;
-        fight.defendScore = results.defendScore;
+        attacker.rollHistory.push([...attackerRoll]);
+        defender.rollHistory.push([...defenderRoll]);
 
         //need to push a unique copy and not the pointer to the object
-        this.battleHistory.push(this.activeBattle);
+        //this.battleHistory.push(this.activeBattle);
+
+
+        return {
+            attackerLosses: losses.attacker,
+            defenderLosses: losses.defender,
+            attackerRoll: attackerRoll,
+            defenderRoll: defenderRoll
+        }
 
     }
 
@@ -149,5 +134,11 @@ const elise = new Player("Elise");
 //const isaac = new Player("Isaac");
 //const elijah = new Player("Elijah");
 //const risk = new DiceMatch({ attacker: jake, attackerLives: 10 }, { defender: elise, defenderLives: 7 }, DIE_SIDES);
-const risk = new DiceMatch({ attackerLives: 10 }, { defender: elise, defenderLives: 7 }, DIE_SIDES);
+const risk = new DiceMatch({ attacker: jake, attackerLives: 10 }, { defender: elise, defenderLives: 7 }, DIE_SIDES);
+
+risk.attack(3, 3);
+risk.attack(3, 3);
+risk.attack(3, 1);
+risk.attack(2, 2);
+
 
