@@ -1,11 +1,30 @@
+const attackerResults = document.querySelector("#attackerResults");
+const defenderResults = document.querySelector("#defenderResults");
+const btnAttackerRoll = document.querySelector("#attackerRoll");
+const btnDefenderRoll = document.querySelector("#defenderRoll");
+const attackerNumDice = document.querySelector("#attackerNumDice");
+const defenderNumDice = document.querySelector("#defenderNumDice");
+
+
+
+
 
 //Requires class Players as arguments for constructor
+//input
+//Attacker object:  Player class, number of lives
+//Defender object:  Player class, number of lives
+//# of sides on die
+//Button for attacker roll
+//Button for defender roll
+//Input for attacker number of dice to roll
+//Input for defender number of dice to roll
 class DiceMatch {
 
     constructor(
         { attacker, attackerLives } = {},
         { defender, defenderLives } = {},
-        dieSideCount) {
+        dieSideCount,
+        btnARoll, btnDRoll, attNumDice, defNumDice) {
 
         this.attacker = {
             player: attacker,
@@ -20,7 +39,27 @@ class DiceMatch {
         };
 
         this.dieSideCount = dieSideCount;
+        this.attNumDice = attNumDice;
+        this.defNumDice = defNumDice;
+        this.rollStatus = [false, false];
 
+        btnARoll.addEventListener("click", () => this.readyToRoll("attacker"));
+        btnDRoll.addEventListener("click", () => this.readyToRoll("defender"));
+
+    }
+
+    readyToRoll(player) {
+        if (player === "attacker") {
+            this.rollStatus[0] = true;
+        }
+        if (player === "defender") {
+            this.rollStatus[1] = true;
+        }
+        if (this.rollStatus[0] && this.rollStatus[1]) {
+            this.attack(this.attNumDice.value, this.defNumDice.value);
+            this.rollStatus[0] = false;
+            this.rollStatus[1] = false;
+        }
     }
 
     // get numPlayers() {
@@ -77,6 +116,8 @@ class DiceMatch {
         //need to push a unique copy and not the pointer to the object
         //this.battleHistory.push(this.activeBattle);
 
+        attackerResults.innerHTML = `Attack: ${attackerRoll}`;
+        defenderResults.innerHTML = `Defend: ${defenderRoll}`;
 
         return {
             attackerLosses: losses.attacker,
@@ -88,15 +129,14 @@ class DiceMatch {
     }
 
     //Returns an array of the requested number of dice rolled defaulted to 6 sides.
-    roll(numDice, numSides = 6) {
-
-        const diceArray = [];
-        let result;
-
+    roll(numDice = 1, numSides = 6) {
         if (numDice < 1 || numSides < 2) {
             console.log("rollDice requires at least 1 die and 2 sides");
             return [];
         }
+
+        const diceArray = [];
+        let result;
 
         for (let i = 0; i < numDice; i++) {
             result = Math.floor(Math.random() * numSides + 1);
@@ -104,8 +144,6 @@ class DiceMatch {
         }
 
         return diceArray;
-
-
     }
 
     largeToSmall(array) {
@@ -134,11 +172,6 @@ const elise = new Player("Elise");
 //const isaac = new Player("Isaac");
 //const elijah = new Player("Elijah");
 //const risk = new DiceMatch({ attacker: jake, attackerLives: 10 }, { defender: elise, defenderLives: 7 }, DIE_SIDES);
-const risk = new DiceMatch({ attacker: jake, attackerLives: 10 }, { defender: elise, defenderLives: 7 }, DIE_SIDES);
-
-risk.attack(3, 3);
-risk.attack(3, 3);
-risk.attack(3, 1);
-risk.attack(2, 2);
+const risk = new DiceMatch({ attacker: jake, attackerLives: 10 }, { defender: elise, defenderLives: 7 }, DIE_SIDES, btnAttackerRoll, btnDefenderRoll, attackerNumDice, defenderNumDice);
 
 
