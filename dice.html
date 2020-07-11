@@ -8,34 +8,32 @@
 </head>
 <body>
     <h1>DICE</h1>
-    <div class = "container">
-        <h2>Attacker</h2>
-        <div>
-            <div id="attackerLives"></div>
-            <label for="">Number of Dice</label>
-            <input id="attackerNumDice" type="number" value = 3 max = 3 min = 1>
-            <button id="attackerRoll">ROLL</button>
-    
-        </div>
-    </div>
-
-    <div class = "container">
-        <h2>RESULTS</h2>
-        <div id="attackerResults"></div>
-        <div id="defenderResults"></div>
-    </div>
-    
     <div class="container">
-        <h2>Defender</h2>
-        <div>
-            <div id="defenderLives"></div>
-            <label for="">Number of Dice</label>
-            <input id="defenderNumDice" type="number" value = 2 max = 2 min = 1>
-            <button id="defenderRoll">ROLL</button>
+        <div class = "player">
+            <h2>Attacker</h2>
+            <div>
+                <div id="attackerLives"></div>
+                <label for="">Number of Dice</label>
+                <input id="attackerNumDice" type="number" value = 3 max = 3 min = 1>
+                <button id="attackerRoll">ROLL</button>
+        
+            </div>
+        </div>
+        <div class="player">
+            <h2>Defender</h2>
+            <div>
+                <div id="defenderLives"></div>
+                <label for="">Number of Dice</label>
+                <input id="defenderNumDice" type="number" value = 2 max = 2 min = 1>
+                <button id="defenderRoll">ROLL</button>
+            </div>
         </div>
     </div>
-
-
+    <h3>RESULTS</h3>
+    <div class = "container results">
+        <div class="dice" id="attackerResults">ATTACK</div>
+        <div class="dice" id="defenderResults">DEFEND</div>
+    </div>
 
 
     <script src="player.js"></script>

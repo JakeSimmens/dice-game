@@ -95,6 +95,7 @@ class DiceMatch {
         const attackerRoll = this.largeToSmall(this.roll(attackerNumOfDice));
         const defenderRoll = this.largeToSmall(this.roll(defenderNumOfDice));
 
+
         let diceToCompare = 0;
         let losses = {
             attacker: [],
@@ -125,8 +126,19 @@ class DiceMatch {
         //need to push a unique copy and not the pointer to the object
         //this.battleHistory.push(this.activeBattle);
 
-        attackerResults.innerHTML = `Attack: ${attackerRoll}`;
-        defenderResults.innerHTML = `Defend: ${defenderRoll}`;
+        let defenderStr = "";
+        let attackerStr = "";
+
+        for (let die of attackerRoll) {
+            attackerStr += `<span class="die">${die}</span>`;
+        }
+        for (let die of defenderRoll) {
+            defenderStr += `<span class="die">${die}</span>`;
+        }
+
+        // attackerResults.innerHTML = `<h1>Attack: ${attackerRoll} </h1>`;
+        attackerResults.innerHTML = attackerStr;
+        defenderResults.innerHTML = defenderStr;
 
         return {
             attackerLosses: losses.attacker,
