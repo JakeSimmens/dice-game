@@ -4,6 +4,8 @@ const btnAttackerRoll = document.querySelector("#attackerRoll");
 const btnDefenderRoll = document.querySelector("#defenderRoll");
 const attackerNumDice = document.querySelector("#attackerNumDice");
 const defenderNumDice = document.querySelector("#defenderNumDice");
+const attackLives = document.querySelector("#attackerLives");
+const defendLives = document.querySelector("#defenderLives");
 
 
 
@@ -24,7 +26,7 @@ class DiceMatch {
         { attacker, attackerLives } = {},
         { defender, defenderLives } = {},
         dieSideCount,
-        btnARoll, btnDRoll, attNumDice, defNumDice) {
+        btnARoll, btnDRoll, attNumDice, defNumDice, attackLivesDisplay, defendLivesDisplay) {
 
         this.attacker = {
             player: attacker,
@@ -41,8 +43,13 @@ class DiceMatch {
         this.dieSideCount = dieSideCount;
         this.attNumDice = attNumDice;
         this.defNumDice = defNumDice;
+        this.attackLivesDisplay = attackLivesDisplay;
+        this.defendLivesDisplay = defendLivesDisplay;
         this.rollStatus = [false, false];
 
+
+        this.attackLivesDisplay.innerHTML = `LIVES: ${this.attacker.lives}`;
+        this.defendLivesDisplay.innerHTML = `LIVES: ${this.defender.lives}`;
         btnARoll.addEventListener("click", () => this.readyToRoll("attacker"));
         btnDRoll.addEventListener("click", () => this.readyToRoll("defender"));
 
@@ -59,6 +66,8 @@ class DiceMatch {
             this.attack(this.attNumDice.value, this.defNumDice.value);
             this.rollStatus[0] = false;
             this.rollStatus[1] = false;
+            this.attackLivesDisplay.innerHTML = `LIVES: ${this.attacker.lives}`;
+            this.defendLivesDisplay.innerHTML = `LIVES: ${this.defender.lives}`;
         }
     }
 
@@ -172,6 +181,6 @@ const elise = new Player("Elise");
 //const isaac = new Player("Isaac");
 //const elijah = new Player("Elijah");
 //const risk = new DiceMatch({ attacker: jake, attackerLives: 10 }, { defender: elise, defenderLives: 7 }, DIE_SIDES);
-const risk = new DiceMatch({ attacker: jake, attackerLives: 10 }, { defender: elise, defenderLives: 7 }, DIE_SIDES, btnAttackerRoll, btnDefenderRoll, attackerNumDice, defenderNumDice);
+const risk = new DiceMatch({ attacker: jake, attackerLives: 10 }, { defender: elise, defenderLives: 10 }, DIE_SIDES, btnAttackerRoll, btnDefenderRoll, attackerNumDice, defenderNumDice, attackLives, defendLives);
 
 

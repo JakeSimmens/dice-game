@@ -3,27 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dice.css">
     <title>Dice Game</title>
 </head>
 <body>
     <h1>DICE</h1>
-    <h2>Attacker</h2>
-    <div>
-        <label for="">Number of Dice</label>
-        <input id="attackerNumDice" type="number" value = 3 max = 3 min = 1>
-        <button id="attackerRoll">ROLL</button>
+    <div class = "container">
+        <h2>Attacker</h2>
+        <div>
+            <div id="attackerLives"></div>
+            <label for="">Number of Dice</label>
+            <input id="attackerNumDice" type="number" value = 3 max = 3 min = 1>
+            <button id="attackerRoll">ROLL</button>
+    
+        </div>
     </div>
 
-    <h2>Defender</h2>
-    <div>
-        <label for="">Number of Dice</label>
-        <input id="defenderNumDice" type="number" value = 2 max = 2 min = 1>
-        <button id="defenderRoll">ROLL</button>
-    </div>
-    <div>
+    <div class = "container">
+        <h2>RESULTS</h2>
         <div id="attackerResults"></div>
         <div id="defenderResults"></div>
     </div>
+    
+    <div class="container">
+        <h2>Defender</h2>
+        <div>
+            <div id="defenderLives"></div>
+            <label for="">Number of Dice</label>
+            <input id="defenderNumDice" type="number" value = 2 max = 2 min = 1>
+            <button id="defenderRoll">ROLL</button>
+        </div>
+    </div>
+
+
 
 
     <script src="player.js"></script>
