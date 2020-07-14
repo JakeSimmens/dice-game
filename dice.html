@@ -13,8 +13,8 @@
             <h2>Attacker</h2>
             <div>
                 <div id="attackerLives"></div>
-                <label for="">Number of Dice</label>
-                <input id="attackerNumDice" type="number" value = 3 max = 3 min = 1>
+                <label for="attackerNumDice">Number of Dice</label>
+                <input id="attackerNumDice" name="attackerNumDice" type="number" value = 3 max = 3 min = 1>
                 <button id="attackerRoll">ROLL</button>
         
             </div>
@@ -23,18 +23,18 @@
             <h2>Defender</h2>
             <div>
                 <div id="defenderLives"></div>
-                <label for="">Number of Dice</label>
-                <input id="defenderNumDice" type="number" value = 2 max = 2 min = 1>
+                <label for="defenderNumDice">Number of Dice</label>
+                <input id="defenderNumDice" name="defenderNumDice" type="number" value = 2 max = 2 min = 1>
                 <button id="defenderRoll">ROLL</button>
             </div>
         </div>
     </div>
     <h3>RESULTS</h3>
-    <div class = "container results">
+    <div class = "container">
         <div class="dice" id="attackerResults">ATTACK</div>
+        <div class="dice" id="compareResults"></div>
         <div class="dice" id="defenderResults">DEFEND</div>
     </div>
-
 
     <script src="player.js"></script>
     <script src="app.js"></script>

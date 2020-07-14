@@ -1,5 +1,6 @@
 const attackerResults = document.querySelector("#attackerResults");
 const defenderResults = document.querySelector("#defenderResults");
+const compareResults = document.querySelector("#compareResults");
 const btnAttackerRoll = document.querySelector("#attackerRoll");
 const btnDefenderRoll = document.querySelector("#defenderRoll");
 const attackerNumDice = document.querySelector("#attackerNumDice");
@@ -128,16 +129,31 @@ class DiceMatch {
 
         let defenderStr = "";
         let attackerStr = "";
+        let compareStr = "";
 
         for (let die of attackerRoll) {
-            attackerStr += `<span class="die">${die}</span>`;
+            attackerStr += `<div class="die">${die}</div>`;
+
         }
         for (let die of defenderRoll) {
-            defenderStr += `<span class="die">${die}</span>`;
+            defenderStr += `<div class="die die-white">${die}</div>`;
         }
+
+        for (let result of losses.attacker) {
+            console.log(result);
+            if (result === 0) {
+                compareStr += '<div class="results">&lt===WIN</div>';
+            } else if (result === -1) {
+                compareStr += '<div class="results">WIN===&gt</div>';
+            } else {
+                compareStr += '<div class="results">X</div>'
+            }
+        }
+        console.log(compareStr);
 
         // attackerResults.innerHTML = `<h1>Attack: ${attackerRoll} </h1>`;
         attackerResults.innerHTML = attackerStr;
+        compareResults.innerHTML = compareStr;
         defenderResults.innerHTML = defenderStr;
 
         return {
