@@ -96,65 +96,12 @@ class DiceMatch {
         const attackerRoll = this.largeToSmall(this.roll(attackerNumOfDice));
         const defenderRoll = this.largeToSmall(this.roll(defenderNumOfDice));
 
-
-        let diceToCompare = 0;
-        let losses = {
-            attacker: [],
-            defender: []
-        };
-
-        if (attackerRoll.length >= defenderRoll.length) {
-            diceToCompare = defenderRoll.length;
-        } else {
-            diceToCompare = attackerRoll.length;
-        }
-
-        for (let i = 0; i < diceToCompare; i++) {
-            if (attackerRoll[i] > defenderRoll[i]) {
-                losses.attacker.push(0);
-                losses.defender.push(-1);
-                defender.lives--;
-            } else {
-                losses.attacker.push(-1);
-                losses.defender.push(0);
-                attacker.lives--;
-            }
-        }
-
         attacker.rollHistory.push([...attackerRoll]);
         defender.rollHistory.push([...defenderRoll]);
+        let losses = this.compareDice(attackerRoll, defenderRoll);
 
-        //need to push a unique copy and not the pointer to the object
-        //this.battleHistory.push(this.activeBattle);
-
-        let defenderStr = "";
-        let attackerStr = "";
-        let compareStr = "";
-
-        for (let die of attackerRoll) {
-            attackerStr += `<div class="die">${die}</div>`;
-
-        }
-        for (let die of defenderRoll) {
-            defenderStr += `<div class="die die-white">${die}</div>`;
-        }
-
-        for (let result of losses.attacker) {
-            console.log(result);
-            if (result === 0) {
-                compareStr += '<div class="results">&lt===WIN</div>';
-            } else if (result === -1) {
-                compareStr += '<div class="results">WIN===&gt</div>';
-            } else {
-                compareStr += '<div class="results">X</div>'
-            }
-        }
-        console.log(compareStr);
-
-        // attackerResults.innerHTML = `<h1>Attack: ${attackerRoll} </h1>`;
-        attackerResults.innerHTML = attackerStr;
-        compareResults.innerHTML = compareStr;
-        defenderResults.innerHTML = defenderStr;
+        this.displayBattleResults(attackerRoll, defenderRoll, losses,
+            attackerResults, defenderResults, compareResults);
 
         return {
             attackerLosses: losses.attacker,
@@ -164,6 +111,68 @@ class DiceMatch {
         }
 
     }
+
+    //Pass in array of dice to compare
+    //return: object of losses
+    compareDice(attackerDice, defenderDice) {
+        if (attackerDice.length === 0 || defenderDice.length === 0) return;
+
+        let diceToCompare = 0;
+        let losses = {
+            attacker: [],
+            defender: []
+        };
+
+        attackerDice.length >= defenderDice.length ?
+            diceToCompare = defenderDice.length :
+            diceToCompare = attackerDice.length;
+
+        for (let i = 0; i < diceToCompare; i++) {
+            if (attackerDice[i] > defenderDice[i]) {
+                losses.attacker.push(0);
+                losses.defender.push(-1);
+                this.defender.lives--;
+            } else {
+                losses.attacker.push(-1);
+                losses.defender.push(0);
+                this.attacker.lives--;
+            }
+        }
+
+        //return object of losses
+        return losses;
+
+    }
+
+    displayBattleResults(attackerRoll, defenderRoll, losses, attackElement, defendElement, compareElement) {
+        let defenderStr = "";
+        let attackerStr = "";
+        let compareStr = "";
+
+        for (let die of attackerRoll) {
+            attackerStr += `<div class="die">${die}</div>`;
+        }
+
+        for (let die of defenderRoll) {
+            defenderStr += `<div class="die die-white">${die}</div>`;
+        }
+
+        for (let result of losses.attacker) {
+            if (result === 0) {
+                compareStr += '<div class="results">&lt===WIN</div>';
+            } else if (result === -1) {
+                compareStr += '<div class="results">WIN===&gt</div>';
+            } else {
+                compareStr += '<div class="results">X</div>'
+            }
+        }
+
+        // attackerResults.innerHTML = `<h1>Attack: ${attackerRoll} </h1>`;
+        attackElement.innerHTML = attackerStr;
+        compareElement.innerHTML = compareStr;
+        defendElement.innerHTML = defenderStr;
+    }
+
 
     //Returns an array of the requested number of dice rolled defaulted to 6 sides.
     roll(numDice = 1, numSides = 6) {
