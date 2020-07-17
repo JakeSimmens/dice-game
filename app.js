@@ -21,54 +21,54 @@ const defendLives = document.querySelector("#defenderLives");
 //Button for defender roll
 //Input for attacker number of dice to roll
 //Input for defender number of dice to roll
-class DiceMatch {
+class DiceMatchFor2Players {
 
     constructor(
-        { attacker, attackerLives } = {},
-        { defender, defenderLives } = {},
+        { attacker, attackerLives: attackerRemainingLives } = {},
+        { defender, defenderLives: defenderRemainingLives } = {},
         dieSideCount,
-        btnARoll, btnDRoll, attNumDice, defNumDice, attackLivesDisplay, defendLivesDisplay) {
+        btnAttackerRollDie, btnDefenderRollDie, inputAttackerNumOfDice, inputDefenderNumOfDice, displayAttackerLivesLeft, displayDefenderLivesLeft) {
 
-        this.attacker = {
+        this.attackingPlayer = {
             player: attacker,
-            lives: attackerLives,
-            rollHistory: []
+            livesRemaining: attackerRemainingLives,
+            matchRollHistory: []
         };
 
-        this.defender = {
+        this.defendingPlayer = {
             player: defender,
-            lives: defenderLives,
-            rollHistory: []
+            livesRemaining: defenderRemainingLives,
+            matchRollHistory: []
         };
 
         this.dieSideCount = dieSideCount;
-        this.attNumDice = attNumDice;
-        this.defNumDice = defNumDice;
-        this.attackLivesDisplay = attackLivesDisplay;
-        this.defendLivesDisplay = defendLivesDisplay;
-        this.rollStatus = [false, false];
+        this.inputAttackerNumOfDice = inputAttackerNumOfDice;
+        this.inputDefenderNumOfDice = inputDefenderNumOfDice;
+        this.attackLivesDisplay = displayAttackerLivesLeft;
+        this.defendLivesDisplay = displayDefenderLivesLeft;
+        this.rollBtnClickedStatus = [false, false];
 
 
-        this.attackLivesDisplay.innerHTML = `LIVES: ${this.attacker.lives}`;
-        this.defendLivesDisplay.innerHTML = `LIVES: ${this.defender.lives}`;
-        btnARoll.addEventListener("click", () => this.readyToRoll("attacker"));
-        btnDRoll.addEventListener("click", () => this.readyToRoll("defender"));
+        this.attackLivesDisplay.innerHTML = `LIVES: ${this.attackingPlayer.livesRemaining}`;
+        this.defendLivesDisplay.innerHTML = `LIVES: ${this.defendingPlayer.livesRemaining}`;
+        btnAttackerRollDie.addEventListener("click", () => this.readyToRoll("attacker"));
+        btnDefenderRollDie.addEventListener("click", () => this.readyToRoll("defender"));
 
     }
 
     readyToRoll(player) {
         if (player === "attacker") {
-            this.rollStatus[0] = true;
+            this.rollBtnClickedStatus[0] = true;
         }
         if (player === "defender") {
-            this.rollStatus[1] = true;
+            this.rollBtnClickedStatus[1] = true;
         }
-        if (this.rollStatus[0] && this.rollStatus[1]) {
-            this.attack(this.attNumDice.value, this.defNumDice.value);
-            this.rollStatus[0] = false;
-            this.rollStatus[1] = false;
-            this.attackLivesDisplay.innerHTML = `LIVES: ${this.attacker.lives}`;
-            this.defendLivesDisplay.innerHTML = `LIVES: ${this.defender.lives}`;
+        if (this.rollBtnClickedStatus[0] && this.rollBtnClickedStatus[1]) {
+            this.attackerBattlesDefender(this.inputAttackerNumOfDice.value, this.inputDefenderNumOfDice.value);
+            this.rollBtnClickedStatus[0] = false;
+            this.rollBtnClickedStatus[1] = false;
+            this.attackLivesDisplay.innerHTML = `LIVES: ${this.attackingPlayer.livesRemaining}`;
+            this.defendLivesDisplay.innerHTML = `LIVES: ${this.defendingPlayer.livesRemaining}`;
         }
     }
 
@@ -87,109 +87,109 @@ class DiceMatch {
     //     return this.players[0];
     // }
 
-    attack(attackerNumOfDice = 1, defenderNumOfDice = 1) {
+    attackerBattlesDefender(attackerNumOfDice = 1, defenderNumOfDice = 1) {
         if (attackerNumOfDice <= 0 || defenderNumOfDice <= 0) return;
 
-        const attacker = this.attacker;
-        const defender = this.defender;
+        const attacker = this.attackingPlayer;
+        const defender = this.defendingPlayer;
 
-        const attackerRoll = this.largeToSmall(this.roll(attackerNumOfDice));
-        const defenderRoll = this.largeToSmall(this.roll(defenderNumOfDice));
+        const attackerRollSorted = this.largeToSmall(this.rollDice(attackerNumOfDice));
+        const defenderRollSorted = this.largeToSmall(this.rollDice(defenderNumOfDice));
 
-        attacker.rollHistory.push([...attackerRoll]);
-        defender.rollHistory.push([...defenderRoll]);
-        let losses = this.compareDice(attackerRoll, defenderRoll);
+        attacker.matchRollHistory.push([...attackerRollSorted]);
+        defender.matchRollHistory.push([...defenderRollSorted]);
+        let tallyOfLosses = this.compareDiceArrays(attackerRollSorted, defenderRollSorted);
 
-        this.displayBattleResults(attackerRoll, defenderRoll, losses,
+        this.displayBattleResults(attackerRollSorted, defenderRollSorted, tallyOfLosses,
             attackerResults, defenderResults, compareResults);
 
         return {
-            attackerLosses: losses.attacker,
-            defenderLosses: losses.defender,
-            attackerRoll: attackerRoll,
-            defenderRoll: defenderRoll
+            attackerLosses: tallyOfLosses.attacker,
+            defenderLosses: tallyOfLosses.defender,
+            attackerRoll: attackerRollSorted,
+            defenderRoll: defenderRollSorted
         }
 
     }
 
     //Pass in array of dice to compare
     //return: object of losses
-    compareDice(attackerDice, defenderDice) {
+    compareDiceArrays(attackerDice, defenderDice) {
         if (attackerDice.length === 0 || defenderDice.length === 0) return;
 
-        let diceToCompare = 0;
-        let losses = {
+        let numOfDiceToCompare = 0;
+        let tallyOfLosses = {
             attacker: [],
             defender: []
         };
 
         attackerDice.length >= defenderDice.length ?
-            diceToCompare = defenderDice.length :
-            diceToCompare = attackerDice.length;
+            numOfDiceToCompare = defenderDice.length :
+            numOfDiceToCompare = attackerDice.length;
 
-        for (let i = 0; i < diceToCompare; i++) {
+        for (let i = 0; i < numOfDiceToCompare; i++) {
             if (attackerDice[i] > defenderDice[i]) {
-                losses.attacker.push(0);
-                losses.defender.push(-1);
-                this.defender.lives--;
+                tallyOfLosses.attacker.push(0);
+                tallyOfLosses.defender.push(-1);
+                this.defendingPlayer.livesRemaining--;
             } else {
-                losses.attacker.push(-1);
-                losses.defender.push(0);
-                this.attacker.lives--;
+                tallyOfLosses.attacker.push(-1);
+                tallyOfLosses.defender.push(0);
+                this.attackingPlayer.livesRemaining--;
             }
         }
 
         //return object of losses
-        return losses;
+        return tallyOfLosses;
 
     }
 
-    displayBattleResults(attackerRoll, defenderRoll, losses, attackElement, defendElement, compareElement) {
-        let defenderStr = "";
-        let attackerStr = "";
-        let compareStr = "";
+    displayBattleResults(attackerRoll, defenderRoll, battleLosses, displayAttackerResults, displayDefenderResults, displayComparisonResults) {
+        let divsForAttackerDice = "";
+        let divsForDefenderDice = "";
+        let divsForDiceComparisons = "";
 
         for (let die of attackerRoll) {
-            attackerStr += `<div class="die">${die}</div>`;
+            divsForAttackerDice += `<div class="die">${die}</div>`;
         }
 
         for (let die of defenderRoll) {
-            defenderStr += `<div class="die die-white">${die}</div>`;
+            divsForDefenderDice += `<div class="die die-white">${die}</div>`;
         }
 
-        for (let result of losses.attacker) {
+        for (let result of battleLosses.attacker) {
             if (result === 0) {
-                compareStr += '<div class="results">&lt===WIN</div>';
+                divsForDiceComparisons += '<div class="results">&lt===WIN</div>';
             } else if (result === -1) {
-                compareStr += '<div class="results">WIN===&gt</div>';
+                divsForDiceComparisons += '<div class="results">WIN===&gt</div>';
             } else {
-                compareStr += '<div class="results">X</div>'
+                divsForDiceComparisons += '<div class="results">X</div>'
             }
         }
 
         // attackerResults.innerHTML = `<h1>Attack: ${attackerRoll} </h1>`;
-        attackElement.innerHTML = attackerStr;
-        compareElement.innerHTML = compareStr;
-        defendElement.innerHTML = defenderStr;
+        displayAttackerResults.innerHTML = divsForAttackerDice;
+        displayComparisonResults.innerHTML = divsForDiceComparisons;
+        displayDefenderResults.innerHTML = divsForDefenderDice;
     }
 
 
     //Returns an array of the requested number of dice rolled defaulted to 6 sides.
-    roll(numDice = 1, numSides = 6) {
-        if (numDice < 1 || numSides < 2) {
+    rollDice(numDice = 1, numSidesOnDie = 6) {
+        if (numDice < 1 || numSidesOnDie < 2) {
             console.log("rollDice requires at least 1 die and 2 sides");
             return [];
         }
 
-        const diceArray = [];
-        let result;
+        const diceRollResults = [];
+        let singleDieResult;
 
         for (let i = 0; i < numDice; i++) {
-            result = Math.floor(Math.random() * numSides + 1);
-            diceArray.push(result);
+            singleDieResult = Math.floor(Math.random() * numSidesOnDie + 1);
+            diceRollResults.push(singleDieResult);
         }
 
-        return diceArray;
+        return diceRollResults;
     }
 
     largeToSmall(array) {
@@ -218,6 +218,6 @@ const elise = new Player("Elise");
 //const isaac = new Player("Isaac");
 //const elijah = new Player("Elijah");
 //const risk = new DiceMatch({ attacker: jake, attackerLives: 10 }, { defender: elise, defenderLives: 7 }, DIE_SIDES);
-const risk = new DiceMatch({ attacker: jake, attackerLives: 10 }, { defender: elise, defenderLives: 10 }, DIE_SIDES, btnAttackerRoll, btnDefenderRoll, attackerNumDice, defenderNumDice, attackLives, defendLives);
+const risk = new DiceMatchFor2Players({ attacker: jake, attackerLives: 10 }, { defender: elise, defenderLives: 10 }, DIE_SIDES, btnAttackerRoll, btnDefenderRoll, attackerNumDice, defenderNumDice, attackLives, defendLives);
 
 

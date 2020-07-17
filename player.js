@@ -6,7 +6,7 @@ class Player {
         this.losses = 0;
     }
 
-    get winPercent() {
+    get winningPercentage() {
         if (!(this.wins + this.losses)) {
             return 0;
         }
