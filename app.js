@@ -8,6 +8,20 @@ const elemNumOfDefenderDice = document.querySelector("#defenderNumDice");
 const elemAttackerLives = document.querySelector("#attackerLives");
 const elemDefenderLives = document.querySelector("#defenderLives");
 
+class PageElementsForRiskGame {
+    constructor() {
+        this.attackerResults = document.querySelector("#attackerResults");
+        this.defenderResults = document.querySelector("#defenderResults");
+        this.compareResults = document.querySelector("#compareResults");
+        this.btnAttackerRoll = document.querySelector("#attackerRoll");
+        this.btnDefenderRoll = document.querySelector("#defenderRoll");
+        this.numOfAttackerDice = document.querySelector("#attackerNumDice");
+        this.numOfDefenderDice = document.querySelector("#defenderNumDice");
+        this.attackerLives = document.querySelector("#attackerLives");
+        this.defenderLives = document.querySelector("#defenderLives");
+    }
+}
+
 class RiskGame {
     constructor(...player) {
         this.player = player;
@@ -53,20 +67,9 @@ class RiskGame {
     }
 }
 
-class PageElementsForRiskGame {
-    constructor() {
-        this.attackerResults = document.querySelector("#attackerResults");
-        this.defenderResults = document.querySelector("#defenderResults");
-        this.compareResults = document.querySelector("#compareResults");
-        this.btnAttackerRoll = document.querySelector("#attackerRoll");
-        this.btnDefenderRoll = document.querySelector("#defenderRoll");
-        this.numOfAttackerDice = document.querySelector("#attackerNumDice");
-        this.numOfDefenderDice = document.querySelector("#defenderNumDice");
-        this.attackerLives = document.querySelector("#attackerLives");
-        this.defenderLives = document.querySelector("#defenderLives");
-    }
-}
+class DiceMatchData {
 
+}
 
 class DiceMatchAttackerVsDefender {
 
@@ -75,45 +78,18 @@ class DiceMatchAttackerVsDefender {
         this.attackerTroopsRemaining = numOfAttackingTroops;
         this.defenderTroopsRemaining = numOfDefendingTroops;
         this.dieSideCount = dieSideCount;
+        this.currentMatchData = new DiceMatchData;
+
         this.elem = new PageElementsForRiskGame;
-
-        // (
-        //     { attacker, attackerLives: attackerRemainingLives } = {},
-        //     { defender, defenderLives: defenderRemainingLives } = {},
-        //     dieSideCount,
-        //     btnAttackerRollDie, btnDefenderRollDie, inputAttackerNumOfDice, inputDefenderNumOfDice, displayAttackerLivesLeft, displayDefenderLivesLeft
-        // ) 
-
-
-
-        // this.attackingPlayer = {
-        //     player: attacker,
-        //     livesRemaining: attackerRemainingLives,
-        //     matchRollHistory: []
-        // };
-
-        // this.defendingPlayer = {
-        //     player: defender,
-        //     livesRemaining: defenderRemainingLives,
-        //     matchRollHistory: []
-        // };
-
-        // this.dieSideCount = dieSideCount;
-        // this.inputAttackerNumOfDice = inputAttackerNumOfDice;
-        // this.inputDefenderNumOfDice = inputDefenderNumOfDice;
-        // this.attackLivesDisplay = displayAttackerLivesLeft;
-        // this.defendLivesDisplay = displayDefenderLivesLeft;
         this.rollBtnClickedStatus = [false, false];
-
-
         this.elem.attackerLives.innerHTML = `LIVES: ${this.attackerTroopsRemaining}`;
         this.elem.defenderLives.innerHTML = `LIVES: ${this.defenderTroopsRemaining}`;
-        this.elem.btnAttackerRoll.addEventListener("click", () => this.readyToRoll("attacker"));
-        this.elem.btnDefenderRoll.addEventListener("click", () => this.readyToRoll("defender"));
+        this.elem.btnAttackerRoll.addEventListener("click", () => this._checkAllPlayersPressRoll("attacker"));
+        this.elem.btnDefenderRoll.addEventListener("click", () => this._checkAllPlayersPressRoll("defender"));
 
     }
 
-    readyToRoll(player) {
+    _checkAllPlayersPressRoll(player) {
         if (player === "attacker") {
             this.rollBtnClickedStatus[0] = true;
         }
@@ -121,58 +97,31 @@ class DiceMatchAttackerVsDefender {
             this.rollBtnClickedStatus[1] = true;
         }
 
-        const elem = this.elem;
-
         if (this.rollBtnClickedStatus[0] && this.rollBtnClickedStatus[1]) {
-            this.attackerBattlesDefender();
-            this.rollBtnClickedStatus[0] = false;
-            this.rollBtnClickedStatus[1] = false;
-            elem.attackerLives.innerHTML = `LIVES: ${this.attackerTroopsRemaining}`;
-            elem.defenderLives.innerHTML = `LIVES: ${this.defenderTroopsRemaining}`;
+            this._initiateDiceRolls();
         }
     }
 
-    // get numPlayers() {
-    //     return this.players.length;
-    // }
+    _initiateDiceRolls() {
+        this._attackerBattlesDefender();
+        this.rollBtnClickedStatus[0] = false;
+        this.rollBtnClickedStatus[1] = false;
+        this.elem.attackerLives.innerHTML = `LIVES: ${this.attackerTroopsRemaining}`;
+        this.elem.defenderLives.innerHTML = `LIVES: ${this.defenderTroopsRemaining}`;
+    }
 
-    // get whosTurn() {
-    //     //return this.players[this.turnCount % this.numPlayers - 1];
-    //     return this.players[0];
-    // }
-
-    // nextPlayer() {
-    //     let turnOver = this.players.shift();
-    //     this.players.push(turnOver);
-    //     return this.players[0];
-    // }
-
-    attackerBattlesDefender() {
+    _attackerBattlesDefender() {
         const attackerNumOfDice = this.elem.numOfAttackerDice.value;
         const defenderNumOfDice = this.elem.numOfDefenderDice.value;
         if (attackerNumOfDice <= 0 || defenderNumOfDice <= 0) return;
 
-        //need to refactor since attackingPlayer and defending player don't exist.
-        //maybe create an constructor variable to hold the roll history.
-        const attacker = this.attackingPlayer;
-        const defender = this.defendingPlayer;
-
         const attackerRollSorted = this.largeToSmall(this.rollDice(attackerNumOfDice));
         const defenderRollSorted = this.largeToSmall(this.rollDice(defenderNumOfDice));
 
-        attacker.matchRollHistory.push([...attackerRollSorted]);
-        defender.matchRollHistory.push([...defenderRollSorted]);
         let tallyOfLosses = this.compareDiceArrays(attackerRollSorted, defenderRollSorted);
 
         this.displayBattleResults(attackerRollSorted, defenderRollSorted, tallyOfLosses,
             elemAttackerResults, elemDefenderResults, elemCompareResults);
-
-        return {
-            attackerLosses: tallyOfLosses.attacker,
-            defenderLosses: tallyOfLosses.defender,
-            attackerRoll: attackerRollSorted,
-            defenderRoll: defenderRollSorted
-        }
 
     }
 
@@ -195,11 +144,11 @@ class DiceMatchAttackerVsDefender {
             if (attackerDice[i] > defenderDice[i]) {
                 tallyOfLosses.attacker.push(0);
                 tallyOfLosses.defender.push(-1);
-                this.defendingPlayer.livesRemaining--;
+                this.defenderTroopsRemaining--;
             } else {
                 tallyOfLosses.attacker.push(-1);
                 tallyOfLosses.defender.push(0);
-                this.attackingPlayer.livesRemaining--;
+                this.attackerTroopsRemaining--;
             }
         }
 
