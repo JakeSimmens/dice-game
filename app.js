@@ -68,6 +68,18 @@ class RiskGame {
 }
 
 class DiceMatchData {
+    constructor() {
+        this.attackerRollSorted = [];
+        this.defenderRollSorted = [];
+        this.tallyOfLosses = {
+            attacker: [],
+            defender: []
+        };
+    }
+
+    clearLossesTally() {
+        this.tallyOfLosses = { attacker: [], defender: [] };
+    }
 
 }
 
@@ -78,7 +90,7 @@ class DiceMatchAttackerVsDefender {
         this.attackerTroopsRemaining = numOfAttackingTroops;
         this.defenderTroopsRemaining = numOfDefendingTroops;
         this.dieSideCount = dieSideCount;
-        this.currentMatchData = new DiceMatchData;
+        this.matchData = new DiceMatchData;
 
         this.elem = new PageElementsForRiskGame;
         this.rollBtnClickedStatus = [false, false];
@@ -103,6 +115,7 @@ class DiceMatchAttackerVsDefender {
     }
 
     _initiateDiceRolls() {
+        this.matchData.clearLossesTally();
         this._attackerBattlesDefender();
         this.rollBtnClickedStatus[0] = false;
         this.rollBtnClickedStatus[1] = false;
@@ -115,75 +128,85 @@ class DiceMatchAttackerVsDefender {
         const defenderNumOfDice = this.elem.numOfDefenderDice.value;
         if (attackerNumOfDice <= 0 || defenderNumOfDice <= 0) return;
 
-        const attackerRollSorted = this.largeToSmall(this.rollDice(attackerNumOfDice));
-        const defenderRollSorted = this.largeToSmall(this.rollDice(defenderNumOfDice));
+        this.matchData.attackerRollSorted = this.largeToSmall(this.rollDice(attackerNumOfDice));
+        this.matchData.defenderRollSorted = this.largeToSmall(this.rollDice(defenderNumOfDice));
 
-        let tallyOfLosses = this.compareDiceArrays(attackerRollSorted, defenderRollSorted);
-
-        this.displayBattleResults(attackerRollSorted, defenderRollSorted, tallyOfLosses,
-            elemAttackerResults, elemDefenderResults, elemCompareResults);
+        this._compareDiceArrays();
+        this._displayBattleResults();
 
     }
 
     //Pass in array of dice to compare
     //return: object of losses
-    compareDiceArrays(attackerDice, defenderDice) {
+    _compareDiceArrays() {
+        const attackerDice = this.matchData.attackerRollSorted;
+        const defenderDice = this.matchData.defenderRollSorted;
+
         if (attackerDice.length === 0 || defenderDice.length === 0) return;
 
         let numOfDiceToCompare = 0;
-        let tallyOfLosses = {
-            attacker: [],
-            defender: []
-        };
 
         attackerDice.length >= defenderDice.length ?
             numOfDiceToCompare = defenderDice.length :
             numOfDiceToCompare = attackerDice.length;
 
         for (let i = 0; i < numOfDiceToCompare; i++) {
-            if (attackerDice[i] > defenderDice[i]) {
-                tallyOfLosses.attacker.push(0);
-                tallyOfLosses.defender.push(-1);
-                this.defenderTroopsRemaining--;
-            } else {
-                tallyOfLosses.attacker.push(-1);
-                tallyOfLosses.defender.push(0);
-                this.attackerTroopsRemaining--;
-            }
+            this._compareTwoDice(attackerDice[i], defenderDice[i]);
         }
-
-        //return object of losses
-        return tallyOfLosses;
-
     }
 
-    displayBattleResults(attackerRoll, defenderRoll, battleLosses, displayAttackerResults, displayDefenderResults, displayComparisonResults) {
+    _compareTwoDice(attackerDie, defenderDie) {
+        const data = this.matchData;
+
+        if (attackerDie > defenderDie) {
+            data.tallyOfLosses.attacker.push(0);
+            data.tallyOfLosses.defender.push(-1);
+            this.defenderTroopsRemaining--;
+        } else {
+            data.tallyOfLosses.attacker.push(-1);
+            data.tallyOfLosses.defender.push(0);
+            this.attackerTroopsRemaining--;
+        }
+    }
+
+    _displayBattleResults() {
+
+        const data = this.matchData;
+
         let divsForAttackerDice = "";
         let divsForDefenderDice = "";
         let divsForDiceComparisons = "";
 
-        for (let die of attackerRoll) {
+        console.log(`dice comp before: ${divsForDiceComparisons}`);
+
+
+
+        for (let die of data.attackerRollSorted) {
             divsForAttackerDice += `<div class="die">${die}</div>`;
         }
 
-        for (let die of defenderRoll) {
+        for (let die of data.defenderRollSorted) {
             divsForDefenderDice += `<div class="die die-white">${die}</div>`;
         }
 
-        for (let result of battleLosses.attacker) {
+        for (let result of data.tallyOfLosses.attacker) {
             if (result === 0) {
                 divsForDiceComparisons += '<div class="results">&lt===WIN</div>';
             } else if (result === -1) {
                 divsForDiceComparisons += '<div class="results">WIN===&gt</div>';
             } else {
-                divsForDiceComparisons += '<div class="results">X</div>'
+                divsForDiceComparisons += '<div class="results">X</div>';
             }
+            console.log(`dice comp loop ${result}: ${divsForDiceComparisons}`);
         }
 
-        // attackerResults.innerHTML = `<h1>Attack: ${attackerRoll} </h1>`;
-        displayAttackerResults.innerHTML = divsForAttackerDice;
-        displayComparisonResults.innerHTML = divsForDiceComparisons;
-        displayDefenderResults.innerHTML = divsForDefenderDice;
+        const elem = this.elem;
+        console.log(`dice comp after: ${divsForDiceComparisons}`);
+
+        elem.attackerResults.innerHTML = divsForAttackerDice;
+        elem.defenderResults.innerHTML = divsForDefenderDice;
+        elem.compareResults.innerHTML = divsForDiceComparisons;
+
     }
 
 
