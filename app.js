@@ -136,8 +136,6 @@ class DiceMatchAttackerVsDefender {
 
     }
 
-    //Pass in array of dice to compare
-    //return: object of losses
     _compareDiceArrays() {
         const attackerDice = this.matchData.attackerRollSorted;
         const defenderDice = this.matchData.defenderRollSorted;
@@ -171,15 +169,15 @@ class DiceMatchAttackerVsDefender {
 
     _displayBattleResults() {
 
-        const data = this.matchData;
+        this._displayDiceDivs();
+        this._displayWinnerOfRolls();
+    }
 
+    _displayDiceDivs() {
+
+        const data = this.matchData;
         let divsForAttackerDice = "";
         let divsForDefenderDice = "";
-        let divsForDiceComparisons = "";
-
-        console.log(`dice comp before: ${divsForDiceComparisons}`);
-
-
 
         for (let die of data.attackerRollSorted) {
             divsForAttackerDice += `<div class="die">${die}</div>`;
@@ -189,30 +187,35 @@ class DiceMatchAttackerVsDefender {
             divsForDefenderDice += `<div class="die die-white">${die}</div>`;
         }
 
-        for (let result of data.tallyOfLosses.attacker) {
-            if (result === 0) {
-                divsForDiceComparisons += '<div class="results">&lt===WIN</div>';
-            } else if (result === -1) {
-                divsForDiceComparisons += '<div class="results">WIN===&gt</div>';
-            } else {
-                divsForDiceComparisons += '<div class="results">X</div>';
-            }
-            console.log(`dice comp loop ${result}: ${divsForDiceComparisons}`);
+        this.elem.attackerResults.innerHTML = divsForAttackerDice;
+        this.elem.defenderResults.innerHTML = divsForDefenderDice;
+    }
+
+    _displayWinnerOfRolls() {
+
+        let divsForDiceComparisons = "";
+
+        for (let result of this.matchData.tallyOfLosses.attacker) {
+            divsForDiceComparisons += this._createDivForWinner(result);
         }
 
-        const elem = this.elem;
-        console.log(`dice comp after: ${divsForDiceComparisons}`);
+        this.elem.compareResults.innerHTML = divsForDiceComparisons;
+    }
 
-        elem.attackerResults.innerHTML = divsForAttackerDice;
-        elem.defenderResults.innerHTML = divsForDefenderDice;
-        elem.compareResults.innerHTML = divsForDiceComparisons;
+    _createDivForWinner(result) {
 
+        if (result === 0) {
+            return '<div class="results">&lt===WIN</div>';
+        } else if (result === -1) {
+            return '<div class="results">WIN===&gt</div>';
+        } else {
+            return '<div class="results">X</div>';
+        }
     }
 
 
-    //Returns an array of the requested number of dice rolled defaulted to 6 sides.
-    rollDice(numDice = 1, numSidesOnDie = 6) {
-        if (numDice < 1 || numSidesOnDie < 2) {
+    rollDice(numDice = 1, numOfSidesOnDie = 6) {
+        if (numDice < 1 || numOfSidesOnDie < 2) {
             console.log("rollDice requires at least 1 die and 2 sides");
             return [];
         }
@@ -221,7 +224,7 @@ class DiceMatchAttackerVsDefender {
         let singleDieResult;
 
         for (let i = 0; i < numDice; i++) {
-            singleDieResult = Math.floor(Math.random() * numSidesOnDie + 1);
+            singleDieResult = Math.floor(Math.random() * numOfSidesOnDie + 1);
             diceRollResults.push(singleDieResult);
         }
 
