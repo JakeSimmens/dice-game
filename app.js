@@ -1,13 +1,3 @@
-const elemAttackerResults = document.querySelector("#attackerResults");
-const elemDefenderResults = document.querySelector("#defenderResults");
-const elemCompareResults = document.querySelector("#compareResults");
-const btnAttackerRoll = document.querySelector("#attackerRoll");
-const btnDefenderRoll = document.querySelector("#defenderRoll");
-const elemNumOfAttackerDice = document.querySelector("#attackerNumDice");
-const elemNumOfDefenderDice = document.querySelector("#defenderNumDice");
-const elemAttackerLives = document.querySelector("#attackerLives");
-const elemDefenderLives = document.querySelector("#defenderLives");
-
 class PageElementsForRiskGame {
     constructor() {
         this.attackerResults = document.querySelector("#attackerResults");
@@ -67,6 +57,7 @@ class RiskGame {
     }
 }
 
+
 class DiceMatchData {
     constructor() {
         this.attackerRollSorted = [];
@@ -96,12 +87,13 @@ class DiceMatchAttackerVsDefender {
         this.rollBtnClickedStatus = [false, false];
         this.elem.attackerLives.innerHTML = `LIVES: ${this.attackerTroopsRemaining}`;
         this.elem.defenderLives.innerHTML = `LIVES: ${this.defenderTroopsRemaining}`;
-        this.elem.btnAttackerRoll.addEventListener("click", () => this._checkAllPlayersPressRoll("attacker"));
-        this.elem.btnDefenderRoll.addEventListener("click", () => this._checkAllPlayersPressRoll("defender"));
+
+        this.elem.btnAttackerRoll.addEventListener("click", () => this.checkAllPlayersPressRoll("attacker"));
+        this.elem.btnDefenderRoll.addEventListener("click", () => this.checkAllPlayersPressRoll("defender"));
 
     }
 
-    _checkAllPlayersPressRoll(player) {
+    checkAllPlayersPressRoll(player) {
         if (player === "attacker") {
             this.rollBtnClickedStatus[0] = true;
         }
@@ -110,33 +102,41 @@ class DiceMatchAttackerVsDefender {
         }
 
         if (this.rollBtnClickedStatus[0] && this.rollBtnClickedStatus[1]) {
-            this._initiateDiceRolls();
+            this.initiateDiceRolls();
         }
     }
 
-    _initiateDiceRolls() {
+    initiateDiceRolls() {
         this.matchData.clearLossesTally();
-        this._attackerBattlesDefender();
-        this.rollBtnClickedStatus[0] = false;
-        this.rollBtnClickedStatus[1] = false;
-        this.elem.attackerLives.innerHTML = `LIVES: ${this.attackerTroopsRemaining}`;
-        this.elem.defenderLives.innerHTML = `LIVES: ${this.defenderTroopsRemaining}`;
+        this.attackerBattlesDefender();
+        this.resetPageForNextRoll();
     }
 
-    _attackerBattlesDefender() {
+    attackerBattlesDefender() {
+
+        this.playersRollDice();
+        this.compareDiceArrays();
+
+        const showBattleResultsOnPage = new DiceBattleResults(this.matchData);
+        showBattleResultsOnPage.displayBattleResults();
+    }
+
+    playersRollDice() {
         const attackerNumOfDice = this.elem.numOfAttackerDice.value;
         const defenderNumOfDice = this.elem.numOfDefenderDice.value;
         if (attackerNumOfDice <= 0 || defenderNumOfDice <= 0) return;
 
-        this.matchData.attackerRollSorted = this.largeToSmall(this.rollDice(attackerNumOfDice));
-        this.matchData.defenderRollSorted = this.largeToSmall(this.rollDice(defenderNumOfDice));
-
-        this._compareDiceArrays();
-        this._displayBattleResults();
-
+        this.matchData.attackerRollSorted = this.getSortedDiceRoll(attackerNumOfDice);
+        this.matchData.defenderRollSorted = this.getSortedDiceRoll(defenderNumOfDice);
     }
 
-    _compareDiceArrays() {
+    getSortedDiceRoll(numberOfDice) {
+        const getDiceRoll = new Dice;
+        let diceRoll = getDiceRoll.rollDice(numberOfDice);
+        return getDiceRoll.sortLargeToSmall(diceRoll);
+    }
+
+    compareDiceArrays() {
         const attackerDice = this.matchData.attackerRollSorted;
         const defenderDice = this.matchData.defenderRollSorted;
 
@@ -167,52 +167,15 @@ class DiceMatchAttackerVsDefender {
         }
     }
 
-    _displayBattleResults() {
-
-        this._displayDiceDivs();
-        this._displayWinnerOfRolls();
+    resetPageForNextRoll() {
+        this.rollBtnClickedStatus[0] = false;
+        this.rollBtnClickedStatus[1] = false;
+        this.elem.attackerLives.innerHTML = `LIVES: ${this.attackerTroopsRemaining}`;
+        this.elem.defenderLives.innerHTML = `LIVES: ${this.defenderTroopsRemaining}`;
     }
+}
 
-    _displayDiceDivs() {
-
-        const data = this.matchData;
-        let divsForAttackerDice = "";
-        let divsForDefenderDice = "";
-
-        for (let die of data.attackerRollSorted) {
-            divsForAttackerDice += `<div class="die">${die}</div>`;
-        }
-
-        for (let die of data.defenderRollSorted) {
-            divsForDefenderDice += `<div class="die die-white">${die}</div>`;
-        }
-
-        this.elem.attackerResults.innerHTML = divsForAttackerDice;
-        this.elem.defenderResults.innerHTML = divsForDefenderDice;
-    }
-
-    _displayWinnerOfRolls() {
-
-        let divsForDiceComparisons = "";
-
-        for (let result of this.matchData.tallyOfLosses.attacker) {
-            divsForDiceComparisons += this._createDivForWinner(result);
-        }
-
-        this.elem.compareResults.innerHTML = divsForDiceComparisons;
-    }
-
-    _createDivForWinner(result) {
-
-        if (result === 0) {
-            return '<div class="results">&lt===WIN</div>';
-        } else if (result === -1) {
-            return '<div class="results">WIN===&gt</div>';
-        } else {
-            return '<div class="results">X</div>';
-        }
-    }
-
+class Dice {
 
     rollDice(numDice = 1, numOfSidesOnDie = 6) {
         if (numDice < 1 || numOfSidesOnDie < 2) {
@@ -231,7 +194,7 @@ class DiceMatchAttackerVsDefender {
         return diceRollResults;
     }
 
-    largeToSmall(array) {
+    sortLargeToSmall(array) {
         array.sort((a, b) => {
             return b - a;
         });
@@ -239,7 +202,7 @@ class DiceMatchAttackerVsDefender {
         return array;
     }
 
-    smallToLarge(array) {
+    sortSmallToLarge(array) {
         array.sort((a, b) => {
             return a - b;
         });
@@ -248,6 +211,59 @@ class DiceMatchAttackerVsDefender {
     }
 }
 
+class DiceBattleResults {
+
+    constructor(dataFromMatch) {
+        this.matchData = dataFromMatch;
+        this.elem = new PageElementsForRiskGame;
+    }
+
+    displayBattleResults() {
+
+        this.displayDiceDivs();
+        this.displayWinnerOfRolls();
+    }
+
+    displayDiceDivs() {
+
+        const data = this.matchData;
+        let divsForAttackerDice = "";
+        let divsForDefenderDice = "";
+
+        for (let die of data.attackerRollSorted) {
+            divsForAttackerDice += `<div class="die">${die}</div>`;
+        }
+
+        for (let die of data.defenderRollSorted) {
+            divsForDefenderDice += `<div class="die die-white">${die}</div>`;
+        }
+
+        this.elem.attackerResults.innerHTML = divsForAttackerDice;
+        this.elem.defenderResults.innerHTML = divsForDefenderDice;
+    }
+
+    displayWinnerOfRolls() {
+
+        let divsForDiceComparisons = "";
+
+        for (let result of this.matchData.tallyOfLosses.attacker) {
+            divsForDiceComparisons += this.createDivForWinner(result);
+        }
+
+        this.elem.compareResults.innerHTML = divsForDiceComparisons;
+    }
+
+    createDivForWinner(result) {
+
+        if (result === 0) {
+            return '<div class="results">&lt===WIN</div>';
+        } else if (result === -1) {
+            return '<div class="results">WIN===&gt</div>';
+        } else {
+            return '<div class="results">X</div>';
+        }
+    }
+}
 
 
 //test data
@@ -257,7 +273,6 @@ const elise = new Player("Elise");
 //const isaac = new Player("Isaac");
 //const elijah = new Player("Elijah");
 
-//const risk = new DiceMatchAttackerVsDefender({ attacker: jake, attackerLives: 10 }, { defender: elise, defenderLives: 10 }, DIE_SIDES, btnAttackerRoll, btnDefenderRoll, elemNumOfAttackerDice, elemNumOfDefenderDice, elemAttackerLives, elemDefenderLives);
-const risk = new DiceMatchAttackerVsDefender(20, 20, 6);
+const risk = new DiceMatchAttackerVsDefender(20, 20, DIE_SIDES);
 
 
