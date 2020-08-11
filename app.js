@@ -59,12 +59,14 @@ class RiskGame {
 
 
 //test data
-const DIE_SIDES = 6;
-const jake = new Player("Jake");
-const elise = new Player("Elise");
+//const DIE_SIDES = 6;
+//const jake = new Player("Jake");
+//const elise = new Player("Elise");
 //const isaac = new Player("Isaac");
 //const elijah = new Player("Elijah");
 
-const risk = new DiceMatchAttackerVsDefender(20, 20, DIE_SIDES);
+//const risk = new DiceMatchAttackerVsDefender(20, 20, DIE_SIDES);
 
+
+module.exports = { PageElementsForRiskGame };
 

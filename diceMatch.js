@@ -1,4 +1,3 @@
-
 class DiceMatchData {
     constructor() {
         this.attackerRollSorted = [];
@@ -206,4 +205,4 @@ class DiceBattleResults {
     }
 }
 
-module.exports = { Dice: Dice };
+module.exports = { Dice, DiceMatchData, DiceMatchAttackerVsDefender };
