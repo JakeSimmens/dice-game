@@ -36,9 +36,11 @@ class DiceMatchAttackerVsDefender {
     checkAllPlayersPressRoll(player) {
         if (player === "attacker") {
             this.rollBtnClickedStatus[0] = true;
+            this.elem.btnAttackerRoll.setAttribute("class", "clicked-button");
         }
         if (player === "defender") {
             this.rollBtnClickedStatus[1] = true;
+            this.elem.btnDefenderRoll.setAttribute("class", "clicked-button");
         }
 
         if (this.rollBtnClickedStatus[0] && this.rollBtnClickedStatus[1]) {
@@ -57,7 +59,7 @@ class DiceMatchAttackerVsDefender {
         this.playersRollDice();
         this.compareDiceArrays();
 
-        const showBattleResultsOnPage = new DiceBattleResults(this.matchData);
+        const showBattleResultsOnPage = new DiceMatchDisplayResults(this.matchData);
         showBattleResultsOnPage.displayBattleResults();
     }
 
@@ -110,6 +112,8 @@ class DiceMatchAttackerVsDefender {
     resetPageForNextRoll() {
         this.rollBtnClickedStatus[0] = false;
         this.rollBtnClickedStatus[1] = false;
+        this.elem.btnAttackerRoll.removeAttribute("class");
+        this.elem.btnDefenderRoll.removeAttribute("class");
         this.elem.attackerLives.innerHTML = `LIVES: ${this.attackerTroopsRemaining}`;
         this.elem.defenderLives.innerHTML = `LIVES: ${this.defenderTroopsRemaining}`;
     }
@@ -151,7 +155,7 @@ class Dice {
     }
 }
 
-class DiceBattleResults {
+class DiceMatchDisplayResults {
 
     constructor(dataFromMatch) {
         this.matchData = dataFromMatch;
@@ -205,4 +209,11 @@ class DiceBattleResults {
     }
 }
 
-module.exports = { Dice, DiceMatchData, DiceMatchAttackerVsDefender };
+if (module === undefined) {
+    console.log("module UNDEFINED");
+} else {
+    console.log("module DEFINED");
+}
+
+//for tests
+//module.exports = { Dice, DiceMatchData, DiceMatchAttackerVsDefender };

@@ -1,17 +1,3 @@
-class PageElementsForRiskGame {
-    constructor() {
-        this.attackerResults = document.querySelector("#attackerResults");
-        this.defenderResults = document.querySelector("#defenderResults");
-        this.compareResults = document.querySelector("#compareResults");
-        this.btnAttackerRoll = document.querySelector("#attackerRoll");
-        this.btnDefenderRoll = document.querySelector("#defenderRoll");
-        this.numOfAttackerDice = document.querySelector("#attackerNumDice");
-        this.numOfDefenderDice = document.querySelector("#defenderNumDice");
-        this.attackerLives = document.querySelector("#attackerLives");
-        this.defenderLives = document.querySelector("#defenderLives");
-    }
-}
-
 class RiskGame {
     constructor(...player) {
         this.player = player;
@@ -57,16 +43,27 @@ class RiskGame {
     }
 }
 
+class PageElementsForRiskGame {
+    constructor() {
+        this.attackerResults = document.querySelector("#attackerResults");
+        this.defenderResults = document.querySelector("#defenderResults");
+        this.compareResults = document.querySelector("#compareResults");
+        this.btnAttackerRoll = document.querySelector("#attackerRoll");
+        this.btnDefenderRoll = document.querySelector("#defenderRoll");
+        this.numOfAttackerDice = document.querySelector("#attackerNumDice");
+        this.numOfDefenderDice = document.querySelector("#defenderNumDice");
+        this.attackerLives = document.querySelector("#attackerLives");
+        this.defenderLives = document.querySelector("#defenderLives");
+    }
+}
 
 //test data
-//const DIE_SIDES = 6;
-//const jake = new Player("Jake");
-//const elise = new Player("Elise");
-//const isaac = new Player("Isaac");
-//const elijah = new Player("Elijah");
+const DIE_SIDES = 6;
+const jake = new Player("Jake");
+const elise = new Player("Elise");
+// const isaac = new Player("Isaac");
+// const elijah = new Player("Elijah");
 
-//const risk = new DiceMatchAttackerVsDefender(20, 20, DIE_SIDES);
+const risk = new DiceMatchAttackerVsDefender(20, 20, DIE_SIDES);
 
-
-module.exports = { PageElementsForRiskGame };
 

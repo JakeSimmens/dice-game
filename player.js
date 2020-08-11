@@ -8,4 +8,5 @@ class Player {
 
 }
 
-module.exports = { Player };
+//for tests
+//module.exports = { Player };

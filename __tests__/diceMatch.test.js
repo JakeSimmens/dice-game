@@ -18,18 +18,6 @@ describe("DiceMatchData", () => {
     })
 });
 
-// describe("DiceMatchAttackerVsDefender", () => {
-
-//     const DiceMatchAttackerVsDefender = new diceClasses.DiceMatchAttackerVsDefender;
-//     console.log(DiceMatchAttackerVsDefender);
-
-//     describe("checkAllPlayersPressRoll", () => {
-
-//     });
-
-// });
-
-
 
 const Dice = diceClasses.Dice;
 let newDiceRoll;
@@ -88,9 +76,6 @@ describe("sortLargeToSmall", () => {
     it("should return array containing the same numbers", () => {
         expect(diceFunctions.sortLargeToSmall(unsortedArray)).toEqual(expect.arrayContaining(expected));
     });
-    // it("should return array listing numbers largest first", () => {
-    //     expect(diceFunctions.sortLargeToSmall(unsortedArray)).toBe(expected);
-    // });
 });
 
 
@@ -102,9 +87,6 @@ describe("sortSmallToLarge", () => {
     it("should return array containing the same numbers", () => {
         expect(diceFunctions.sortSmallToLarge(unsortedArray)).toEqual(expect.arrayContaining(expected));
     });
-    // it("should return array listing numbers largest first", () => {
-    //     expect(diceFunctions.sortLargeToSmall(unsortedArray)).toBe(expected);
-    // });
 });
 
 

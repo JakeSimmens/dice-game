@@ -31,6 +31,11 @@ button {
     padding: 5px;
 }
 
+.clicked-button {
+    background-color: gray;
+    color: darkgray;
+}
+
 
 .dice {
     display: block;
