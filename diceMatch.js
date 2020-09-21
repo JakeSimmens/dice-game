@@ -25,8 +25,8 @@ class DiceMatchAttackerVsDefender {
 
         this.elem = new PageElementsForRiskGame;
         this.rollBtnClickedStatus = [false, false];
-        this.elem.attackerLives.innerHTML = `LIVES: ${this.attackerTroopsRemaining}`;
-        this.elem.defenderLives.innerHTML = `LIVES: ${this.defenderTroopsRemaining}`;
+        this.elem.attackerLives.innerHTML = `${this.attackerTroopsRemaining}`;
+        this.elem.defenderLives.innerHTML = `${this.defenderTroopsRemaining}`;
 
         this.elem.btnAttackerRoll.addEventListener("click", () => this.checkAllPlayersPressRoll("attacker"));
         this.elem.btnDefenderRoll.addEventListener("click", () => this.checkAllPlayersPressRoll("defender"));
@@ -114,8 +114,8 @@ class DiceMatchAttackerVsDefender {
         this.rollBtnClickedStatus[1] = false;
         this.elem.btnAttackerRoll.removeAttribute("class");
         this.elem.btnDefenderRoll.removeAttribute("class");
-        this.elem.attackerLives.innerHTML = `LIVES: ${this.attackerTroopsRemaining}`;
-        this.elem.defenderLives.innerHTML = `LIVES: ${this.defenderTroopsRemaining}`;
+        this.elem.attackerLives.innerHTML = `${this.attackerTroopsRemaining}`;
+        this.elem.defenderLives.innerHTML = `${this.defenderTroopsRemaining}`;
     }
 }
 
