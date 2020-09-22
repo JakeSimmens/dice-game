@@ -64,6 +64,6 @@ const elise = new Player("Elise");
 // const isaac = new Player("Isaac");
 // const elijah = new Player("Elijah");
 
-const risk = new DiceMatchAttackerVsDefender(20, 20, DIE_SIDES);
+const risk = new DiceMatchAttackerVsDefender(5, 5, DIE_SIDES);
 
 

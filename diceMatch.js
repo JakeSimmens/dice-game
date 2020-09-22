@@ -18,6 +18,10 @@ class DiceMatchAttackerVsDefender {
 
     constructor(numOfAttackingTroops, numOfDefendingTroops, dieSideCount = 6) {
 
+        this.MIN_DIE_COUNT = 1;
+        this.MAX_ATTACKER_DIE_COUNT = 3;
+        this.MAX_DEFENDER_DIE_COUNT = 2;
+        this.MIN_ATTACKER_TROOPS = 2;
         this.attackerTroopsRemaining = numOfAttackingTroops;
         this.defenderTroopsRemaining = numOfDefendingTroops;
         this.dieSideCount = dieSideCount;
@@ -34,11 +38,11 @@ class DiceMatchAttackerVsDefender {
     }
 
     checkAllPlayersPressRoll(player) {
-        if (player === "attacker") {
+        if (player === "attacker" && this.isValidNumberOfDie()) {
             this.rollBtnClickedStatus[0] = true;
             this.elem.btnAttackerRoll.setAttribute("class", "clicked-button");
         }
-        if (player === "defender") {
+        if (player === "defender" && this.isValidNumberOfDie()) {
             this.rollBtnClickedStatus[1] = true;
             this.elem.btnDefenderRoll.setAttribute("class", "clicked-button");
         }
@@ -46,6 +50,36 @@ class DiceMatchAttackerVsDefender {
         if (this.rollBtnClickedStatus[0] && this.rollBtnClickedStatus[1]) {
             this.initiateDiceRolls();
         }
+    }
+
+    isValidNumberOfDie() {
+
+        const attackerDieCount = this.elem.numOfAttackerDice.value;
+        const defenderDieCount = this.elem.numOfDefenderDice.value;
+
+        if (attackerDieCount < this.MIN_DIE_COUNT ||
+            attackerDieCount > this.MAX_ATTACKER_DIE_COUNT) {
+            return false;
+        }
+        if (defenderDieCount < this.MIN_DIE_COUNT ||
+            defenderDieCount > this.MAX_DEFENDER_DIE_COUNT) {
+            return false;
+        }
+        if (defenderDieCount > this.defenderTroopsRemaining) {
+            return false;
+        }
+
+        if (this.attackerTroopsRemaining < this.MIN_ATTACKER_TROOPS) {
+            return false;
+        }
+
+        if (this.attackerTroopsRemaining <= this.MAX_ATTACKER_DIE_COUNT &&
+            attackerDieCount >= this.attackerTroopsRemaining) {
+            return false;
+        }
+
+        return true;
+
     }
 
     initiateDiceRolls() {
@@ -209,11 +243,11 @@ class DiceMatchDisplayResults {
     }
 }
 
-if (module === undefined) {
-    console.log("module UNDEFINED");
-} else {
-    console.log("module DEFINED");
-}
+// if (module === undefined) {
+//     console.log("module UNDEFINED");
+// } else {
+//     console.log("module DEFINED");
+// }
 
 //for tests
 //module.exports = { Dice, DiceMatchData, DiceMatchAttackerVsDefender };
