@@ -13,6 +13,7 @@ body {
     font-family: 'Lalezar', cursive;
     background-color: var(--gunmetal);
     max-width: 1000px;
+    margin: auto;
 
 }
 
@@ -70,8 +71,9 @@ h3 {
     font-size: 1.5rem;
     text-align: center;
     background-color: var(--light-gray);
-    width: 285px;
-    min-width: 285px;
+    max-width: 285px;
+    /* min-width: 285px; */
+    width: 45%;
     height: 400px;
     box-shadow: 4px 4px 5px rgba(0,0,0, .7);
     border-radius: 5px;
@@ -158,6 +160,8 @@ button {
     background-color: var(--green-table);
     padding: 20px;
     height: 300px;
+    width: 90%;
+    margin: auto;
     border-radius: 10px;
     /* border: var(--gunmetal) solid 2px; */
     box-shadow: 4px 4px 5px rgba(0,0,0, .7);
