@@ -13,11 +13,13 @@ body {
     font-family: 'Lalezar', cursive;
     background-color: var(--gunmetal);
     max-width: 1000px;
+    min-width: 640px;
     margin: auto;
 
 }
 
 .navbar {
+    display: flex;
     background-color: var(--red-rust);
     box-shadow: 0px 3px 1px rgba(0,0,0, .1);
     margin-left: -10px;
@@ -25,12 +27,36 @@ body {
     padding: 0;
 }
 
+.navbar div {
+    display: flex;
+    width: 20%;
+    max-width: 150px;
+}
+
+#newGame {
+    display: flex;
+    max-width: 150px;
+    width: 20%;
+    margin: 0;
+    
+}
+
+#newBattle {
+    margin-top: auto;
+    margin-bottom: auto;
+    background-color: var(--yellow-dull);
+    color: var(--red-rust);
+    height: 30px;
+}
+
+
 h1 {
     font-family: 'Ultra', serif;
     color: var(--yellow-dull);
     font-size: 4rem;
     text-align: center;
-    margin: 0;
+    display: flex;
+    margin: auto;
     padding: 0;
 }
 
@@ -99,6 +125,7 @@ h3 {
 input {
     font-size: 1.5rem;
     text-align: center;
+    letter-spacing: -.5rem;
     width: 40px;
     height: 40px;
     color: var(--gunmetal);

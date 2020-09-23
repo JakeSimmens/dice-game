@@ -54,6 +54,7 @@ class PageElementsForRiskGame {
         this.numOfDefenderDice = document.querySelector("#defenderNumDice");
         this.attackerLives = document.querySelector("#attackerLives");
         this.defenderLives = document.querySelector("#defenderLives");
+        this.btnNewBattle = document.querySelector("#newBattle");
     }
 }
 
@@ -64,6 +65,13 @@ const elise = new Player("Elise");
 // const isaac = new Player("Isaac");
 // const elijah = new Player("Elijah");
 
-const risk = new DiceMatchAttackerVsDefender(15, 15, DIE_SIDES);
+const btnNewBattle = document.querySelector("#newBattle");
+
+btnNewBattle.addEventListener("click", () => {
+    btnNewBattle.setAttribute("class", "clicked-button");
+    new DiceMatchAttackerVsDefender(15, 15, DIE_SIDES);
+})
+
+
 
 
