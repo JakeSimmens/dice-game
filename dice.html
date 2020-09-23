@@ -3,42 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Ultra&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="dice.css">
     <title>Risk Dice Game</title>
 </head>
 <body>
-    <div class="navbar">
+    <section class="navbar">
         <h1>Risk Dice</h1>
-    </div>
-    <div class="container">
+    </section>
+    <section class="container">
         <div class = "player">
             <h2>Attacker</h2>
+            <h3>Armies</h3>
             <div>
-                <label for="attackerLives">Armies Remaining</label>
+                <label for="attackerLives"></label>
                 <div class="lives" id="attackerLives" name="attackerLives"></div>
+            </div>
+            <div>
                 <label for="attackerNumDice"></label>
                 <input id="attackerNumDice" name="attackerNumDice" type="number" value = 3 max = 3 min = 1>
                 <button id="attackerRoll">ROLL</button>
-        
             </div>
         </div>
         <div class="player">
             <h2>Defender</h2>
+            <h3>Armies</h3>
             <div>
-                <label for="defenderLives">Armies Remaining</label>
+                <label for="defenderLives"></label>
                 <div class="lives" id="defenderLives" name="defenderLives"></div>
                 <label for="defenderNumDice"></label>
                 <input id="defenderNumDice" name="defenderNumDice" type="number" value = 2 max = 2 min = 1>
                 <button id="defenderRoll">ROLL</button>
             </div>
         </div>
-    </div>
-    <h3>The Battlefield</h3>
-    <div class = "container battlefield">
+    </section>
+    <section class = "container battlefield">
         <div class="dice" id="attackerResults"></div>
         <div class="dice" id="compareResults"></div>
         <div class="dice" id="defenderResults"></div>
-    </div>
+    </section>
 
     <script src="player.js"></script>
     <script src="diceMatch.js"></script>
