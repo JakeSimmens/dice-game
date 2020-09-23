@@ -1,3 +1,18 @@
+class PageElementsForRiskGame {
+    constructor() {
+        this.attackerResults = document.querySelector("#attackerResults");
+        this.defenderResults = document.querySelector("#defenderResults");
+        this.compareResults = document.querySelector("#compareResults");
+        this.btnAttackerRoll = document.querySelector("#attackerRoll");
+        this.btnDefenderRoll = document.querySelector("#defenderRoll");
+        this.numOfAttackerDice = document.querySelector("#attackerNumDice");
+        this.numOfDefenderDice = document.querySelector("#defenderNumDice");
+        this.attackerLives = document.querySelector("#attackerLives");
+        this.defenderLives = document.querySelector("#defenderLives");
+        this.btnNewBattle = document.querySelector("#newBattle");
+    }
+}
+
 class DiceMatchData {
     constructor() {
         this.attackerRollSorted = [];
