@@ -54,14 +54,6 @@ class DiceMatchAttackerVsDefender {
 
     }
 
-    resetMatch() {
-        this.attackerTroopsRemaining = this.elem.inputAttackerArmies.value;
-        this.defenderTroopsRemaining = this.elem.inputDefenderArmies.value;
-        this.elem.attackerLives.innerHTML = `${this.attackerTroopsRemaining}`;
-        this.elem.defenderLives.innerHTML = `${this.defenderTroopsRemaining}`;
-        this.matchData.clearLossesTally();
-    }
-
     checkAllPlayersPressRoll(player) {
         if (this.isValidNumberOfDie()) {
             if (player === "attacker") {
@@ -185,6 +177,14 @@ class DiceMatchAttackerVsDefender {
         this.elem.btnDefenderRoll.removeAttribute("class");
         this.elem.attackerLives.innerHTML = `${this.attackerTroopsRemaining}`;
         this.elem.defenderLives.innerHTML = `${this.defenderTroopsRemaining}`;
+    }
+
+    resetMatch() {
+        this.attackerTroopsRemaining = this.elem.inputAttackerArmies.value;
+        this.defenderTroopsRemaining = this.elem.inputDefenderArmies.value;
+        this.elem.attackerLives.innerHTML = `${this.attackerTroopsRemaining}`;
+        this.elem.defenderLives.innerHTML = `${this.defenderTroopsRemaining}`;
+        this.matchData.clearLossesTally();
     }
 }
 
