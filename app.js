@@ -1,17 +1,32 @@
 const DIE_SIDES = 6;
 const btnNewBattle = document.querySelector("#newBattle");
+const armyInput = document.querySelector("#armyPopup");
+const inputAttackerArmies = document.querySelector("#inputAttackerArmies");
+const inputDefenderArmies = document.querySelector("#inputDefenderArmies");
+const btnStart = document.querySelector("#btnStart");
 
 btnNewBattle.addEventListener("click", async () => {
     btnNewBattle.setAttribute("class", "clicked-button");
-    let armyCounts = await getArmyCounts();
+    armyInput.removeAttribute("class", "hideMe");
+    armyInput.setAttribute("class", "showMe");
+
+});
+
+btnStart.addEventListener("click", () => {
+    let armyCounts = getArmyCounts();
+    armyInput.removeAttribute("class", "showMe");
+    armyInput.setAttribute("class", "hideMe");
     new DiceMatchAttackerVsDefender(armyCounts[0], armyCounts[1], DIE_SIDES);
 });
 
-async function getArmyCounts() {
-    let attackerCount = await Number(prompt("Attacker army count."));
-    let defenderCount = await Number(prompt("Defender army count."));
+function getArmyCounts() {
+    let attackerCount = inputAttackerArmies.value;
+    let defenderCount = inputDefenderArmies.value;
 
-    if (Number.isNaN(attackerCount) || Number.isNaN(defenderCount)) {
+    if (attackerCount === null ||
+        defenderCount === null ||
+        Number.isNaN(attackerCount) ||
+        Number.isNaN(defenderCount)) {
         alert("Please enter numbers");
         return [0, 0];
     }

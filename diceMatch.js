@@ -53,14 +53,19 @@ class DiceMatchAttackerVsDefender {
     }
 
     checkAllPlayersPressRoll(player) {
-        if (player === "attacker" && this.isValidNumberOfDie()) {
-            this.rollBtnClickedStatus[0] = true;
-            this.elem.btnAttackerRoll.setAttribute("class", "clicked-button");
+        if (this.isValidNumberOfDie()) {
+            if (player === "attacker") {
+                this.rollBtnClickedStatus[0] = true;
+                this.elem.btnAttackerRoll.setAttribute("class", "clicked-button");
+            }
+            if (player === "defender") {
+                this.rollBtnClickedStatus[1] = true;
+                this.elem.btnDefenderRoll.setAttribute("class", "clicked-button");
+            }
+        } else {
+            alert("Attacker dice rolled must be less than number of attacker armies remaining.  \r\nDefender dice rolled must be less than or equal to defender armies remaining.");
         }
-        if (player === "defender" && this.isValidNumberOfDie()) {
-            this.rollBtnClickedStatus[1] = true;
-            this.elem.btnDefenderRoll.setAttribute("class", "clicked-button");
-        }
+
 
         if (this.rollBtnClickedStatus[0] && this.rollBtnClickedStatus[1]) {
             this.initiateDiceRolls();
