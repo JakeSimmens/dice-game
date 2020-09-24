@@ -4,6 +4,7 @@ const armyInput = document.querySelector("#armyPopup");
 const inputAttackerArmies = document.querySelector("#inputAttackerArmies");
 const inputDefenderArmies = document.querySelector("#inputDefenderArmies");
 const btnStart = document.querySelector("#btnStart");
+let riskDice = new DiceMatchAttackerVsDefender(DIE_SIDES);
 
 btnNewBattle.addEventListener("click", async () => {
     btnNewBattle.setAttribute("class", "clicked-button");
@@ -14,9 +15,10 @@ btnNewBattle.addEventListener("click", async () => {
 
 btnStart.addEventListener("click", () => {
     let armyCounts = getArmyCounts();
+    riskDice.resetMatch();
     armyInput.removeAttribute("class", "showMe");
     armyInput.setAttribute("class", "hideMe");
-    new DiceMatchAttackerVsDefender(armyCounts[0], armyCounts[1], DIE_SIDES);
+
 });
 
 function getArmyCounts() {

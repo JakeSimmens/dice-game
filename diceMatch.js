@@ -1,5 +1,7 @@
 class PageElementsForRiskGame {
     constructor() {
+        this.inputAttackerArmies = document.querySelector("#inputAttackerArmies");
+        this.inputDefenderArmies = document.querySelector("#inputDefenderArmies");
         this.attackerResults = document.querySelector("#attackerResults");
         this.defenderResults = document.querySelector("#defenderResults");
         this.compareResults = document.querySelector("#compareResults");
@@ -31,25 +33,33 @@ class DiceMatchData {
 
 class DiceMatchAttackerVsDefender {
 
-    constructor(numOfAttackingTroops, numOfDefendingTroops, dieSideCount = 6) {
+    constructor(dieSideCount = 6) {
 
         this.MIN_DIE_COUNT = 1;
         this.MAX_ATTACKER_DIE_COUNT = 3;
         this.MAX_DEFENDER_DIE_COUNT = 2;
         this.MIN_ATTACKER_TROOPS = 2;
-        this.attackerTroopsRemaining = numOfAttackingTroops;
-        this.defenderTroopsRemaining = numOfDefendingTroops;
+
         this.dieSideCount = dieSideCount;
         this.matchData = new DiceMatchData;
-
         this.elem = new PageElementsForRiskGame;
         this.rollBtnClickedStatus = [false, false];
+        this.attackerTroopsRemaining = this.elem.inputAttackerArmies.value;
+        this.defenderTroopsRemaining = this.elem.inputDefenderArmies.value;
         this.elem.attackerLives.innerHTML = `${this.attackerTroopsRemaining}`;
         this.elem.defenderLives.innerHTML = `${this.defenderTroopsRemaining}`;
 
         this.elem.btnAttackerRoll.addEventListener("click", () => this.checkAllPlayersPressRoll("attacker"));
         this.elem.btnDefenderRoll.addEventListener("click", () => this.checkAllPlayersPressRoll("defender"));
 
+    }
+
+    resetMatch() {
+        this.attackerTroopsRemaining = this.elem.inputAttackerArmies.value;
+        this.defenderTroopsRemaining = this.elem.inputDefenderArmies.value;
+        this.elem.attackerLives.innerHTML = `${this.attackerTroopsRemaining}`;
+        this.elem.defenderLives.innerHTML = `${this.defenderTroopsRemaining}`;
+        this.matchData.clearLossesTally();
     }
 
     checkAllPlayersPressRoll(player) {
@@ -74,8 +84,11 @@ class DiceMatchAttackerVsDefender {
 
     isValidNumberOfDie() {
 
-        const attackerDieCount = this.elem.numOfAttackerDice.value;
-        const defenderDieCount = this.elem.numOfDefenderDice.value;
+        const attackerDieCount = Number(this.elem.numOfAttackerDice.value);
+        const defenderDieCount = Number(this.elem.numOfDefenderDice.value);
+        const defenderTroops = Number(this.defenderTroopsRemaining);
+        const attackerTroops = Number(this.attackerTroopsRemaining);
+
 
         if (attackerDieCount < this.MIN_DIE_COUNT ||
             attackerDieCount > this.MAX_ATTACKER_DIE_COUNT) {
@@ -85,16 +98,18 @@ class DiceMatchAttackerVsDefender {
             defenderDieCount > this.MAX_DEFENDER_DIE_COUNT) {
             return false;
         }
-        if (defenderDieCount > this.defenderTroopsRemaining) {
+        if (defenderDieCount > defenderTroops) {
+            //gets hung in here after several new battles
             return false;
         }
 
-        if (this.attackerTroopsRemaining < this.MIN_ATTACKER_TROOPS) {
+        if (attackerTroops < this.MIN_ATTACKER_TROOPS) {
             return false;
         }
 
-        if (this.attackerTroopsRemaining <= this.MAX_ATTACKER_DIE_COUNT &&
-            attackerDieCount >= this.attackerTroopsRemaining) {
+        if (attackerTroops <= this.MAX_ATTACKER_DIE_COUNT &&
+            attackerDieCount >= attackerTroops) {
+            console.log(`attacker troops:  ${this.attackerTroopsRemaining}`);
             return false;
         }
 
