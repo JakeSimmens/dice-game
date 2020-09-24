@@ -117,7 +117,7 @@ class DiceMatchAttackerVsDefender {
     attackerBattlesDefender() {
 
         this.playersRollDice();
-        this.compareDiceArrays();
+        this.comparePlayersDiceArrays();
 
         const showBattleResultsOnPage = new DiceMatchDisplayResults(this.matchData);
         showBattleResultsOnPage.displayBattleResults();
@@ -138,7 +138,7 @@ class DiceMatchAttackerVsDefender {
         return getDiceRoll.sortLargeToSmall(diceRoll);
     }
 
-    compareDiceArrays() {
+    comparePlayersDiceArrays() {
         const attackerDice = this.matchData.attackerRollSorted;
         const defenderDice = this.matchData.defenderRollSorted;
 
