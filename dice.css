@@ -163,6 +163,7 @@ h3 {
 }
 
 input {
+    /* display: inline-flex; */
     font-size: 1.5rem;
     text-align: center;
     letter-spacing: -.5rem;
@@ -176,6 +177,7 @@ input {
 }
 
 button {
+    /* display: inline-flex; */
     border: none;
     background-color: #497b46;
     color: var(--white-rust);

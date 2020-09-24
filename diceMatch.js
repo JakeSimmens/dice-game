@@ -101,7 +101,6 @@ class DiceMatchAttackerVsDefender {
 
         if (attackerTroops <= this.MAX_ATTACKER_DIE_COUNT &&
             attackerDieCount >= attackerTroops) {
-            console.log(`attacker troops:  ${this.attackerTroopsRemaining}`);
             return false;
         }
 
