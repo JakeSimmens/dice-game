@@ -25,7 +25,7 @@ This app takes the dice battle element from the strategy board game Risk.  It is
 
 
 
-### Number of Die to Roll
+### Number of Dice to Roll
 
 The number of dice to roll may vary from 1 to 3 dice.  A pop up window will alert the player if they rolling too many dice.
 *  The attacker must always roll at least one die count less than the army count.
