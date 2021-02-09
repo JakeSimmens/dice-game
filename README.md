@@ -24,14 +24,11 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#how-to-play">How to Play</a></li>
+        <li><a href="#how-to-play">Number of Dice to Roll</a></li>
+        <li><a href="#how-to-play">Scoring</a></li>
       </ul>
     </li>
-    <li><a href="#how-to-play">How to Play</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
@@ -53,7 +50,6 @@ This project takes the dice battle element from the strategy board game Risk and
 This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 * [JavaScript](https://www.ecma-international.org/technical-committees/tc39/)
 * [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) - no framework used
-* [Jest](https://jestjs.io) - for testing
 
 
 <!-- GETTING STARTED -->
@@ -109,4 +105,5 @@ Jake Simmens - [LinkedIn](https://linkedin.com/in/jakesimmens) - jake@jakesimmen
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 * [Othneil Drew](https://github.com/othneildrew/Best-README-Template) - Readme template
+* [Jest](https://jestjs.io) - for testing
 
