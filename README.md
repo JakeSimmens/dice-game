@@ -47,7 +47,6 @@ This project takes the dice battle element from the strategy board game Risk and
 
 ### Built With
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 * [JavaScript](https://www.ecma-international.org/technical-committees/tc39/)
 * [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) - no framework used
 
@@ -60,11 +59,11 @@ Visit the [link](http://jakesimmens.com) to checkout the game.
 <!-- USAGE EXAMPLES -->
 ### How to Play
 
-1.  Click *New Battle* in the upper right corner.
+1.  Click *New Battle* in the upper right corner of the game screen.
 2.  Type in the number of armies for the attacking player.
 3.  Type in the number of armies for the defending player.
 4.  Click *Start Battle*.
-5.  Each player picks 1, 2, or 3 armies to battle.
+5.  Each player picks 1, 2, or 3 armies for the battle.
 6.  Each player presses *Roll*.
 7.  Results are displayed at the bottom.
 8.  Return to step 5 for another round with the current army counts.
@@ -74,11 +73,11 @@ Visit the [link](http://jakesimmens.com) to checkout the game.
 
 #### Number of Dice to Roll
 
-The number of dice to roll may vary from 1 to 3 dice.  A pop up window will alert the player if they rolling too many dice.
-*  The attacker must always roll at least one die count less than the army count.
-  *  Attacker has 3 armies remaining.  The most dice that may be rolled is 2
-*  The defender must always roll less than or equal to the army count.
-  *  Defender has 2 armies remaining.  The most dice that may be rolled is 2.
+The number of dice to roll may vary from 1 to 3 dice.  A pop up window will alert the player if the dice count limit is exceeded and needs to be reduced.
+*  The attacker must always roll at least one die count less than the their current army count.
+  *  i.e. The attacker has 3 armies remaining.  They may roll either 1 or 2 dice, but not 3 dice.
+*  The defender must always roll less than or equal to their current army count.
+  *  Defender has 2 armies remaining.  They may roll either 1 or 2 dice.
   
 
 
