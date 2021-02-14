@@ -43,7 +43,11 @@
   <img src="images/screenshot.png" width="500" title="Risk Dice">
 </p>
 
-This project takes the dice battle element from the strategy board game Risk and implements it in a digital format.  The primary focus of this project is implementing JavaScript classes.  After finishing a read through of the Clean Code book, refactoring and descriptive variable names are a strong focus in the code also.
+This project takes the dice battle element from the strategy board game Risk and implements it in a digital format.  The primary focus was to implement the game using JavaScript classes.  After finishing a read through of the Clean Code book, refactoring and descriptive variable names are a strong focus in the code also.
+
+My primary take away from this work was comparing the use of JavaScript classes with modules.  Modules having the power to keep data and methods private is a big advantage.  For reusing code in the future, it's easier to think through various use cases when we are able to limit access points into a set of code.
+
+I choose to avoid using a CSS framwork to focus on using pure CSS for the design.  The use of a color wheel site, Canva, made the process easier.  However, my eye is more gifted looking at algorithms than making pages look attractive with a variety of colors.
 
 ### Built With
 
@@ -105,4 +109,5 @@ Jake Simmens - [LinkedIn](https://linkedin.com/in/jakesimmens) - jake@jakesimmen
 ## Acknowledgements
 * [Othneil Drew](https://github.com/othneildrew/Best-README-Template) - Readme template
 * [Jest](https://jestjs.io) - for testing
+* [Canva](https://www.canva.com/colors/color-wheel/) - Color wheel
 
