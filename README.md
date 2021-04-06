@@ -40,7 +40,7 @@
 ## About The Project
 
 <p align="center">
-  <img src="images/screenshot.png" width="500" title="Risk Dice">
+  <img src="public/images/screenshot.png" width="500" title="Risk Dice">
 </p>
 
 This project takes the dice battle element from the strategy board game Risk and implements it in a digital format.  The primary focus was to implement the game using JavaScript classes.  After finishing a read through of the Clean Code book, refactoring and descriptive variable names are a strong focus in the code also.
