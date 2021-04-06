@@ -276,12 +276,3 @@ class DiceMatchDisplayResults {
         }
     }
 }
-
-// if (module === undefined) {
-//     console.log("module UNDEFINED");
-// } else {
-//     console.log("module DEFINED");
-// }
-
-//for tests
-//module.exports = { Dice, DiceMatchData, DiceMatchAttackerVsDefender };
