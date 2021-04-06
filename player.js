@@ -7,6 +7,3 @@ class Player {
     }
 
 }
-
-//for tests
-//module.exports = { Player };
