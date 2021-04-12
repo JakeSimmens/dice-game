@@ -7,6 +7,7 @@
     Execute your Risk board game battles in an app.
 
   </h3>
+  <p align="center"><a href="https://dice.jakesimmens.com" target="_blank" rel="noopener noreferrer">Visit Site</a></p>
 
 
 
